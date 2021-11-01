@@ -1,0 +1,8 @@
+#goal definition
+moveit_msgs/Grasp grasp 
+---
+#result definition
+uint16 result
+---
+#feedback
+uint16 state
