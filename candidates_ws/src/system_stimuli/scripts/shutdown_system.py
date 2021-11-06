@@ -22,6 +22,7 @@ if __name__ == '__main__':
         talker()
         rospy.init_node('mock_shutdown_system', anonymous=True)
         pub = rospy.Publisher('system_health', UInt16, queue_size=10)
+        rate = rospy.Rate(1)
         pub.publish(1)
         rospy.loginfo("System error published.")
     except rospy.ROSInterruptException:

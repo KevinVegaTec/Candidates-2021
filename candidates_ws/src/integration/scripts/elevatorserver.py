@@ -14,7 +14,7 @@ class elevatorserver:
     _result = elevatorResult()
 
     def __init__(self):
-        self.server = actionlib.SimpleActionServer('elevator_movement', elevatorAction, self.execute(), False)
+        self.server = actionlib.SimpleActionServer('elevator_movement', elevatorAction, self.execute, False)
         self.server.start()
 
     def execute(self, goal):
@@ -22,29 +22,29 @@ class elevatorserver:
         r = rospy.Rate(1)
         success = True
         self._result = 3
-        self._feedback = 0
+        self._feedback.state = 0
 
         aux = 0
         while aux < 2:
-            # Needs goal validation ?
+            # Needs goal validation, a valid posture
             self.server.publish_feedback(self._feedback)
-            self._feedback = aux
-            if self._feedback == 0:
-                print('Calculating FK')
+            self._feedback.state = aux
+            if self._feedback.state == 0:
+                print('Calculating FK') # Simulating First State
                 r.sleep()
                 
-            elif self._feedback == 1:
-                print('Executing elevator movement')
+            elif self._feedback.state == 1:
+                print('Executing elevator movement') # Simulating Second State
                 r.sleep()
                 self._result = 1
     
             else:
-                self._result = 2
+                self._result = 2 # Unknow error
             aux = aux + 1
 
         if success:
             self._result = 0
-            rospy.loginfo('Succeeded moving elevator')
+            rospy.loginfo('Succeeded moving elevator') # Success
             self.server.set_succeeded(self._result) 
         
         

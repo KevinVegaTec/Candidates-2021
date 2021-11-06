@@ -1,4 +1,46 @@
 # System Integration Challenge
+
+## _Kevin Vega Rodriguez - A101612430_
+
+### -Doc: https://docs.google.com/document/d/16s06HtfMeUINMs2U8GiRFvtCFTepGtXuXZ3AYJUyQAo/edit?usp=sharing  
+
+
+##### Basic launching
+
+Run roscore, initialize the action servers with
+
+#### rosrun integration <server>
+### - armserver.py
+### - neckserver.py
+### - elevatorserver.py
+
+
+also, initialize the service FK_service-py
+
+initialize the shutdown system with rosrun system_stimuli shutdown_system
+
+ *Dont forget to pull source "devel/setup.bash" in every bash
+ 
+ #### Lastly run the MechanismActionClient.py and you will have 3 options
+
+| Option | Action |
+    | ------ | ------ |
+    | 1 | *Run a arm simulation* |
+    | 2 | *Run a neck simulation* |
+    | 3 | *Run a elevator simulation* |
+    | 0 | *Exit*
+    
+In all the simulations you can watch the process at the client and at the server.
+
+                                            NOTES
+    - The shutdown system has to have an option before going back to the safe position of the system, and the safe positions are not implemented but are supposed to be provided to send another goal to every action server
+    
+    - The mechanicak stimuli has a integration problem because the object doesn't seems to be the same one, even when i'm sending a grasp to the arm server it doesn't work, thats why is not fully implemented
+    
+
+
+
+
 ## Mechanism integration
 
 ## Description

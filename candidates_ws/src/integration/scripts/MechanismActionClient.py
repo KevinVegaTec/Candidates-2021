@@ -18,15 +18,17 @@ from geometry_msgs.msg import Pose, Quaternion
 from moveit_msgs.msg import Grasp
 
 
-shutdown = None
-global armg
-global neckg 
-global elevatorg 
+sd = 0
+# my tries to get the smituli correctly
+armg = armGoal()
+neckg = neckGoal()
+elevatorg = elevatorGoal()
 
 
 def callbacksd(data):
-    #rospy.loginfo("SH = %s", data.data)
-    shutdown = data.data
+    rospy.loginfo("SH = %s", data.data)
+    global sd 
+    sd = data.data
 
 def callbackarm(data2):
     global armg 
@@ -45,6 +47,7 @@ if __name__ == '__main__':
     arm_client = actionlib.SimpleActionClient('arm_movement',armAction)
     neck_client = actionlib.SimpleActionClient('neck_movement',neckAction)
     elevator_client = actionlib.SimpleActionClient('elevator_movement',elevatorAction)
+    # creating the node and the 3 clients
     shutdown = 0
 
     print('Insert an option to make the simulation:')
@@ -55,21 +58,21 @@ if __name__ == '__main__':
     rospy.Subscriber('neck_movement_data',Quaternion,callbackneck)
     rospy.Subscriber('elevator_movement_data',Pose,callbackelevator)
     rospy.Subscriber('system_health',UInt16,callbacksd)
-    
-
+    # subscribing the node to the topics
+    print(".................",sd)
     option = int(input())
     
-    while (option != 0) and (shutdown == 0):
+    while (option != 0) and (sd == 0):
         print ('option = ',option)
-        
+        print(".................",sd)
 
-        if option == 1:
+        if option == 1: # Arm Goal
             
             arm_goal  = armGoal()
             
             print(arm_goal)
             #
-            arm_goal.grasp.grasp_quality = (random.random()*11)
+            arm_goal.grasp.grasp_quality = (random.random()*11) # Generates a random number, the service return 0 if the number is between 10 and 11
             print("---------------")
             arm_client.send_goal(arm_goal)
             print ("arm goal sent, waiting for response")
@@ -78,15 +81,15 @@ if __name__ == '__main__':
             
             
 
-        elif option == 2:
+        elif option == 2: # Neck Goal
             neck_goal = neckGoal()
             neck_client.send_goal(neck_goal)
             print ("neck goal sent, waiting for response")
             neck_client.wait_for_result()
             print("Result = ", neck_client.get_result().result)
 
-        elif option == 3:
-            elevator_goal = elevator_goal()
+        elif option == 3: # Elevator Goal
+            elevator_goal = elevatorGoal()
             elevator_client.send_goal(elevator_goal)
             print ("elevator goal sent, waiting for response")
             elevator_client.wait_for_result()
@@ -94,5 +97,12 @@ if __name__ == '__main__':
         
         option = int(input('Insert an option: '))
     
-    if shutdown == 1:
-        print("Putting everything in safe positions")
+        
+    if sd == 1:
+        print("Putting everything in safe positions") #shutdown system
+        #arm_client.send_goal(arm_safe_goal)
+        #neck_client.send_goal(neck_safe_goal)
+        #elevator_client.send_goal(elevator_safe_goal)
+        #rospy.signal_shutdown(reason)
+
+        #This is the skeleton of the shutdown, it needs to be tested
