@@ -6,13 +6,13 @@ from geometry_msgs.msg import Pose, Quaternion
 from moveit_msgs.msg import Grasp
 
 def arm_movement():
-    pub_arm_movement = rospy.Publisher('arm_movement', Grasp, queue_size=10)
+    pub_arm_movement = rospy.Publisher('arm_movement_data', Grasp, queue_size=10)
     grasp = Grasp()
     pub_arm_movement.publish(grasp)
     rospy.loginfo("Arm movement stimuli published.")
 
 def neck_movement():
-    pub_neck_movement = rospy.Publisher('neck_movement', Quaternion, queue_size=10)
+    pub_neck_movement = rospy.Publisher('neck_movement_data', Quaternion, queue_size=10)
     quat = Quaternion()
     quat.x = 0.0
     quat.y = 0.0
@@ -22,7 +22,7 @@ def neck_movement():
     rospy.loginfo("Neck movement stimuli published.")
 
 def elevator_movement():
-    pub_elevator_movement = rospy.Publisher('elevator_movement', Pose, queue_size=10)
+    pub_elevator_movement = rospy.Publisher('elevator_movement_data', Pose, queue_size=10)
     p = Pose()
     p.position.x = 0.0
     p.position.y = 0.4
