@@ -24,11 +24,11 @@ initialize the shutdown system with rosrun system_stimuli shutdown_system
  #### Lastly run the MechanismActionClient.py and you will have 3 options
 
 | Option | Action |
-    | ------ | ------ |
-    | 1 | *Run a arm simulation* |
-    | 2 | *Run a neck simulation* |
-    | 3 | *Run a elevator simulation* |
-    | 0 | *Exit*
+| ------ | ------ |
+| 1 | *Run a arm simulation* |
+| 2 | *Run a neck simulation* |
+| 3 | *Run a elevator simulation* |
+| 0 | *Exit* |
     
 In all the simulations you can watch the process at the client and at the server.
 
