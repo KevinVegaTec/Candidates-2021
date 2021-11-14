@@ -49,6 +49,13 @@ if __name__ == '__main__':
     elevator_client = actionlib.SimpleActionClient('elevator_movement',elevatorAction)
     # creating the node and the 3 clients
     shutdown = 0
+    print ("Waiting for servers...")
+    arm_client.wait_for_server()
+    print("Arm server ready")
+    neck_client.wait_for_server()
+    print("NEck server ready")
+    elevator_client.wait_for_server()
+    print("Elevator server ready")
 
     print('Insert an option to make the simulation:')
     print('1 = arm:')
@@ -76,9 +83,12 @@ if __name__ == '__main__':
             print("---------------")
             arm_client.send_goal(arm_goal)
             print ("arm goal sent, waiting for response")
-            arm_client.wait_for_result()
-            print("Result = ", arm_client.get_result().result)
-            
+            #arm_client.wait_for_result()
+            #print("Arm Result = ", arm_client.get_result().result)
+            try:
+                print("Arm Result = ", arm_client.get_result().result)
+            except:
+                print("Arm feedback = ")#, arm_client._handle_feedback())
             
 
         elif option == 2: # Neck Goal

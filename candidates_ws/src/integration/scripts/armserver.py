@@ -37,7 +37,7 @@ class armserver:
                 try:
                     fks = rospy.ServiceProxy('FK_service',FK_service) #asking for FK service
                     print(fks())
-                    if fks(goal.grasp.grasp_quality).res == 1:
+                    if fks(goal.grasp.grasp_quality).output == 1:
                         print("FK Success")
                     else:
                         print("FK failed")
