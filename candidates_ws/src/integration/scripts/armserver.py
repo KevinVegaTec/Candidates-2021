@@ -6,7 +6,7 @@ import roslib
 roslib.load_manifest('integration')
 import rospy
 import actionlib
-import random
+from std_msgs.msg import UInt16
 from integration.msg import armFeedback, armAction, armResult
 from integration.srv import *
 
@@ -30,13 +30,15 @@ class armserver:
 
         while self._feedback.state < 3:
             # Needs goal validation?, probably, a valid grasp
-            self.server.publish_feedback(self._feedback)
+            
             self._feedback.state = aux
+            self.server.publish_feedback(self._feedback)
             if self._feedback.state == 0:
                 print('Calculating FK')
                 try:
                     fks = rospy.ServiceProxy('FK_service',FK_service) #asking for FK service
                     print(fks())
+                    self.server.publish_feedback(self._feedback)
                     if fks(goal.grasp.grasp_quality).output == 1:
                         print("FK Success")
                     else:
@@ -49,14 +51,15 @@ class armserver:
                 r.sleep()
                 
             elif self._feedback.state == 1 and success:
+                self.server.publish_feedback(self._feedback)
                 print('Executing arm movement') # Arm movement state
-                r.sleep()
-                self._result = 1
             elif self._feedback.state == 2 and success:
+                self.server.publish_feedback(self._feedback)
                 print('Executing grip movement') #grip movement state
                 r.sleep()
                 self._result = 2
             else:
+                self.server.publish_feedback(self._feedback)
                 self._result = 3
             aux = aux+1
         if success:
@@ -66,6 +69,9 @@ class armserver:
         else:
             rospy.loginfo('failed moving arm')
             self.server.set_aborted(result=self._result) 
+            print("ERROR")
+            pub = rospy.Publisher('system_health', UInt16, queue_size=10)
+            pub.publish(1)
         
         
 

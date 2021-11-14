@@ -36,11 +36,13 @@ def elevator_movement():
 
 if __name__ == '__main__':
     try:
-        rospy.init_node('mock_mechanical_stimuli', anonymous=True)
+        rospy.init_node('mock_mechanical_stimuli', anonymous=False)
         while not rospy.is_shutdown():
             arm_movement()
+            time.sleep(4)
             neck_movement()
+            time.sleep(4)
             elevator_movement()
-            time.sleep(1)
+            time.sleep(4)
     except rospy.ROSInterruptException:
         pass
